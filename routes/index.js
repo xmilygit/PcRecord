@@ -32,9 +32,9 @@ router.get('/pclog', function (req, res, next) {
   let pcname = req.query['pcname'];
   let sqlstr = ""
   if (pcname == "")
-    sqlstr = "with temp as(select *,row_number() over(order by lessondate,lessonnode) as sid from dbo.[log] where lessondate between '" + daterange1 + "' and '" + daterange2 + "') select top " + pagesize + " * from temp where sid between " + beginnum + " and " + endnum
+    sqlstr = "with temp as(select *,row_number() over(order by lessondate,lessonnode) as sid from dbo.[log2] where lessondate between '" + daterange1 + "' and '" + daterange2 + "') select top " + pagesize + " * from temp where sid between " + beginnum + " and " + endnum
   else
-    sqlstr = "with temp as(select *,row_number() over(order by lessondate,lessonnode) as sid from dbo.[log] where lessondate between '" + daterange1 + "' and '" + daterange2 + "' and pcname='" + pcname + "') select top " + pagesize + " * from temp where sid between " + beginnum + " and " + endnum
+    sqlstr = "with temp as(select *,row_number() over(order by lessondate,lessonnode) as sid from dbo.[log2] where lessondate between '" + daterange1 + "' and '" + daterange2 + "' and pcname='" + pcname + "') select top " + pagesize + " * from temp where sid between " + beginnum + " and " + endnum
   console.log(sqlstr)
   sqlhelp(res, sqlstr, '获取上机记录', false)
 })
