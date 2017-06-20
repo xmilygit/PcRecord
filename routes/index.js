@@ -35,8 +35,10 @@ router.get('/pclog', function (req, res, next) {
     sqlstr = "with temp as(select *,row_number() over(order by lessondate,lessonnode) as sid from dbo.[log2] where lessondate between '" + daterange1 + "' and '" + daterange2 + "') select top " + pagesize + " * from temp where sid between " + beginnum + " and " + endnum
   else
     sqlstr = "with temp as(select *,row_number() over(order by lessondate,lessonnode) as sid from dbo.[log2] where lessondate between '" + daterange1 + "' and '" + daterange2 + "' and pcname='" + pcname + "') select top " + pagesize + " * from temp where sid between " + beginnum + " and " + endnum
+  
+  let sqlstr2="select count(*) as recosum from dbo.[log2] where lessondate between '" + daterange1 + "' and '" + daterange2 + "' and pcname='" + pcname + "'"
   console.log(sqlstr)
-  sqlhelp(res, sqlstr, '获取上机记录', false)
+  sqlhelp(res, sqlstr+";"+sqlstr2, '获取上机记录', true)
 })
 
 //数据库查询辅助类

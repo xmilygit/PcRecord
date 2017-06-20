@@ -85,9 +85,9 @@
                 <script type="text/template" id="template2">
                     \{{#each reco}}
                     <div class="card">
-                        <div class="card-header row">
-                            <div class="col-50">上机日期:\{{lessondate.substring(0,10)}}</div>
-                            <div class="col-50">使用者:\{{student}}</div>
+                        <div class="card-header row" style="font-size:14px">
+                            <div class="col-50">上机日期：\{{lessondate.substring(0,10)}}</div>
+                            <div class="col-50">学生：\{{student}}</div>
                         </div>
                         <div class="card-content">
                             <div class="card-content-inner">
@@ -101,13 +101,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-100">课程内容：
-                                        <br>\{{lessonname}}
+                                        <br><span style="margin-left:28px">\{{lessonname}}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
-                            上机时间：
+                            上机时间：\{{lessontime lessonnode}}
                         </div>
                     </div>
                     \{{/each}}

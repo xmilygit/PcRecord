@@ -8,14 +8,19 @@ var myApp = new Framework7({
 var $$ = Dom7;
 
 //定义AJAX服务器地址
-var svrUrl = "http://188.188.1.15:3000";
+var svrUrl = "http://192.168.123.110:3000";
 // Add view
 var mainView = myApp.addView('.view-main', {
     // Because we use fixed-through navbar we can enable dynamic navbar
     dynamicNavbar: true
 });
 
+var lesstime=["上课时间","08:20 —— 09:00","09:10 —— 09:50","10:15 —— 10:55","11:10 —— 11:40","14:50 —— 15:20","15:35 —— 16:15","16:25 —— 17:05"]
 
+Template7.registerHelper('lessontime',function(classnode){
+    let node=classnode.substring(1,2);
+    return lesstime[node];
+})
 //定义日期控件的配置变量
 var calendarconfig = {
     monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
@@ -52,12 +57,12 @@ var shtmlRecord = $$("#template2").html(),
 
 
 var loading = false;
-
 function loaddata() {
     let daterange = $$("#calendar-default").val() || year + "-01-01" + " - " + year + "-" + month + "-" + day;
     let pcname = $$("#pcname").val() || "";
     let pagesize = 20
-    let currentcount = $$('#listOfRecord li').length;
+    //let currentcount = $$('#listOfRecord li').length;
+    let currentcount = $$('#listOfRecord>div').length;
     let currentpage = currentcount / pagesize;
     currentpage = currentpage + 1;
 
@@ -79,13 +84,14 @@ function loaddata() {
                 }))
                 */
                 // card
+                
                 $$("#listOfRecord").append(phtmlRecord({
-                    reco: data.recordset
+                    reco: data.recordset[0]
                 }))
                 /*
                 if (currentpage == 1)
                     $$("#counttitle").html(daterange + "共找到" + data.recordset[1][0].recosum + "条逾期记录");
-                
+                */
                 if (currentpage * pagesize >= data.recordset[1][0].recosum) {
                     // 加载完毕，则注销无限加载事件，以防不必要的加载
                     myApp.detachInfiniteScroll($$('.infinite-scroll'));
@@ -93,7 +99,7 @@ function loaddata() {
                     $$('.infinite-scroll-preloader').hide();
                     return;
                 }
-                */
+                
                 loading = false;
             }
 
@@ -107,9 +113,11 @@ function loaddata() {
 }
 
 //点击查看按钮获取数据时
+$$('.infinite-scroll-preloader').hide();
 $$('#viewrecord').on('click', function () {
     
-    $$("#listOfRecord ul").html("");
+    //$$("#listOfRecord ul").html("");
+    $$("#listOfRecord").html("");
     //注册无限加载事件
     myApp.attachInfiniteScroll($$('.infinite-scroll'))
     // 加载提示符
