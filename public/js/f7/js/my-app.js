@@ -42,10 +42,14 @@ var day = moment().date() < 10 ? "0" + moment().date() : moment().date();
 console.log(year + "年" + month + "月" + day + "日")
 
 
-//上机记录列表的模板初始化
-var shtmlRecord = $$("#template1").html(),
+//上机记录列表的模板初始化1 Accordion
+//var shtmlRecord = $$("#template1").html(),
+//    phtmlRecord = Template7.compile(shtmlRecord);
+
+//上机记录列表的模板初始化2 card
+var shtmlRecord = $$("#template2").html(),
     phtmlRecord = Template7.compile(shtmlRecord);
-    //alert(shtmlRecord)
+
 
 var loading = false;
 
@@ -69,7 +73,13 @@ function loaddata() {
             if (data.type == 'error') {
                 myApp.alert(data.message, "出错了")
             } else {
+                /* Accordion
                 $$("#listOfRecord ul").append(phtmlRecord({
+                    reco: data.recordset
+                }))
+                */
+                // card
+                $$("#listOfRecord").append(phtmlRecord({
                     reco: data.recordset
                 }))
                 /*
