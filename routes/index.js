@@ -14,6 +14,10 @@ var config = {
   }
 }
 
+var year = moment().year();
+var month = ((moment().month() + 1)) < 10 ? "0" + (moment().month() + 1) : moment().month() + 1;
+var day = moment().date() < 10 ? "0" + moment().date() : moment().date();
+
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -26,10 +30,14 @@ router.get('/pclog', function (req, res, next) {
   let pagesize = parseInt(req.query["pagesize"]);
   let beginnum = parseInt(pagesize * currentpage) + 1
   let endnum = beginnum + pagesize - 1;
-  console.log(req.query['daterange'])
+  //console.log(req.query['daterange'])
   let daterange1 = req.query['daterange'].substring(0, 10).replace(/-/g, '');
   let daterange2 = req.query['daterange'].substring(13, 23).replace(/-/g, '');
   let pcname = req.query['pcname'];
+  //console.log(daterange2);
+  if(daterange2==year.toString()+month.toString()+day.toString())
+      daterange2=year.toString()+month.toString()+(moment().date()-1<10?"0"+moment().date()-1:moment().date()-1);
+  //console.log(daterange2);
   let sqlstr = ""
   if (pcname == "")
     sqlstr = "with temp as(select *,row_number() over(order by lessondate,lessonnode) as sid from dbo.[log2] where lessondate between '" + daterange1 + "' and '" + daterange2 + "') select top " + pagesize + " * from temp where sid between " + beginnum + " and " + endnum
