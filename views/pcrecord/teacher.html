@@ -1,0 +1,95 @@
+<div class="views">
+    <div class="view view-main">
+        <div class="pages">
+            <div data-page="home" class="page navbar-fixed">
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <div class="left"></div>
+                        <div class="center">上机登记</div>
+                        <div class="right"></div>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="content-block-title">确认信息后提交</div>
+                    <div class="list-block">
+                        <ul>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-input">
+                                            <input type="text" placeholder="" readonly id="picker-info1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div id="picker-info-container1"></div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-input">
+                                            <input type="text" placeholder="" readonly id="picker-info2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div id="picker-info-container2"></div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">课程内容</div>
+                                        <div class="item-input">
+                                            <input type="text" placeholder="此处输入课程内容" name="lesson" id="lesson">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-input">
+                                            <a href="#" class="button active" id="submitlesson">确定</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <input type="hidden" id="classname" name="classname">
+                        <input type="hidden" id="node" name="node">
+                        <input type="hidden" id="time" name="time">
+                        <input type="hidden" id="teacher" name="teacher">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+<script type="text/javascript" src="/js/f7/js/my-app-teacher.js"></script>
+<script>
+    $(function () {
+        var socket = io();
+        var lessoninfo = {
+            classname: '',
+            node: '',
+            time: '',
+            teacher: '',
+            lesson: ''
+        }
+        $("#submitlesson").click(function () {
+            lessoninfo.classname=$("#classname").val();
+            lessoninfo.node=$("#node").val();
+            lessoninfo.time=$("#time").val();
+            lessoninfo.teacher=$("#teacher").val();
+            lessoninfo.lesson=$("#lesson").val();
+            socket.emit('set base lesson info',lessoninfo)
+        })
+    });
+
+</script>

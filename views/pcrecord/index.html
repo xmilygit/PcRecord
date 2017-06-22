@@ -1,88 +1,118 @@
-<!DOCTYPE html>
-<html>
+<div class="views">
+    <div class="view view-main">
+        <div class="pages">
+            <div data-page="home" class="page navbar-fixed">
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <div class="left"></div>
+                        <div class="center">上机登记</div>
+                        <div class="right"></div>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="content-block-title">确认信息后提交</div>
+                    <div class="list-block">
+                        <ul>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-media"><i class="icon icon-form-tel"></i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title label">计算机名</div>
+                                        <div class="item-input">
+                                            <input type="text" disabled name="pcname" id="pcname">
+                                            <input type="hidden" name="pccode" id="pccode">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-media"><i class="icon icon-form-name"></i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title label">姓名</div>
+                                        <div class="item-input">
+                                            <input type="text" placeholder="此处输入姓名" name="studnet" id="student">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-media"><i class="icon icon-form-email"></i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title label">班级</div>
+                                        <div class="item-input">
+                                            <input type="text" disabled name="classname" id="classname">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-media"><i class="icon icon-form-url"></i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title label">课程内容</div>
+                                        <div class="item-input">
+                                            <input type="text" disabled name="lesson" id="lesson">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-media"><i class="icon icon-form-url"></i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title label">教师</div>
+                                        <div class="item-input">
+                                            <input type="text" disabled name="teacher" id="teacher">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-media"><i class="icon icon-form-calendar"></i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title label">时段</div>
+                                        <div class="item-input">
+                                            <input type="text" disabled name="time" id="time">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-input">
+                                            <a href="#" class="button active" id="submitlesson">确定</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    $(function () {
+        var socket = io();
+        socket.on('set lesson', function (res) {
+            $("#classname").val(res.classname);
+            $("#lesson").val(res.lesson);
+            $("#time").val(res.time);
+            $("#teacher").val(res.teacher);
+            $("#student").val(res.pcinfo[0].StudentName);
+            $("#pcname").val(res.pcinfo[0].studentcode)
+            $("#pccode").val(res.pcinfo[0].pcname)
+        })
 
-<head>
-    <!-- Required meta tags-->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- Color theme for statusbar -->
-    <meta name="theme-color" content="#2196f3">
-    <!-- Your app title -->
-    <title></title>
-    <!-- Path to Framework7 Library CSS, Material Theme -->
-    <link rel="stylesheet" href="f7/css/framework7.ios.min.css">
-    <!-- Path to Framework7 color related styles, Material Theme -->
-    <link rel="stylesheet" href="f7/css/framework7.ios.colors.min.css">
-    <!-- Path to your custom app styles-->
-    <link rel="stylesheet" href="f7/css/my-app.css">
-    <link rel="stylesheet" href="f7/css/framework7-icons.css">
-    <!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
-    <!-- Path to Framework7 Library JS-->
-    <script type="text/javascript" src="f7/js/framework7.min.js"></script>
-    <style>
-       
-    </style>
-</head>
-
-<body>
-
-      <!-- <script type="text/javascript" src="js/async.min.js"></script>-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
-
-    <!-- Path to your app js-->
-    <script type="text/javascript" src="f7/js/my-app.js"></script>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script>
-        $(function () {
-            var socket = io();
-            var currentUser = '';
-            $("#callnumber").click(function () {
-                socket.emit('getnumber', currentUser);
-            })
-
-            $("#savequit").click(function(){
-                socket.emit('save quit',currentUser);
-                window.location.href=window.location.href
-            })
-
-            $("#jump").click(function(){
-                socket.emit('jump number',currentUser)
-            })
-
-            $("#loginbutton").click(function () {
-                socket.emit('username ok', $('#username').val());
-                myApp.closeModal('.login-screen')
-            })
-            
-            $("#reloadtime").click(function(){
-                socket.emit('reload time')
-            })
-            
-            //显示平均时间
-            socket.on('time avg',function(time1){
-                $("#avg").text(time1)
-            })
-            //接收服务器传来的激活用户名输入窗口的命令
-            socket.on('input username', function (msg) {
-                myApp.loginScreen()
-            })
-            //接收服务器传来的用户名输入注册数据 
-            socket.on('username ok', function (userobj) {
-                currentUser = userobj
-                socket.emit('getnumber', currentUser);
-            })
-            //接收服务器获取到数据并显示 
-            socket.on('getnumber', function (userobj) {
-                currentUser=userobj;
-                $('#number').text(userobj.number.number);
-            })
-        });
-
-    </script>
-
-</body>
-
-</html>  
+        socket.on('reload lesson', function () {
+            socket.emit('reload lesson')
+        })
+    });
+</script>
