@@ -1,3 +1,6 @@
+//为集成socket.io而写
+var io=require('socket.io')();
+//end
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -8,7 +11,9 @@ var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
 
 
+
 var index = require('./routes/index');
+var pcrecord=require('./routes/pcrecord')(io);
 
 var app = express();
 
@@ -35,6 +40,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
+app.use('/pcrecord',pcrecord);
 
 console.log("服务器启动完成")
 
@@ -55,5 +61,12 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+//为集成socket.io而写
+app.io=io;
+//io.on('connection',function(socket){
+//  console.log('连接成功'); 
+//})
+//end
 
 module.exports = app;
